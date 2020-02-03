@@ -17,6 +17,21 @@ namespace WebF
                 usersRepeater.DataSource = TraerUsuarios();
                 usersRepeater.DataBind();
             }
+            usersRepeater.ItemCommand += UsersRepeater_ItemCommand;
+        }
+
+        private void UsersRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName == "editarBtn")
+            {
+                string idPersona = ((Button)e.CommandSource).CommandArgument;
+                Response.Redirect("WebForm2.aspx?IDUsuario="+idPersona);
+            }
+            else if(e.CommandName == "eliminarBtn")
+            {
+                string idPersona = ((Button)e.CommandSource).CommandArgument;
+                Response.Redirect("WebForm3.aspx?IDUsuario=" + idPersona);
+            }
         }
 
         private List<Usuario> TraerUsuarios()
@@ -90,10 +105,18 @@ namespace WebF
 
         protected void agregarABD_Click(object sender, EventArgs e)
         {
+            if(txtBoxAddNombre.Text != "" && txtBoxAddApellido.Text != "" && txtBoxAddEdad.Text != "")
+            {
             AgregarUsuario(txtBoxAddNombre.Text, txtBoxAddApellido.Text, txtBoxAddEdad.Text, radioTipo.SelectedValue);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect",
             "alert('¡Usuario agregado!'); window.location='" +
             Request.ApplicationPath + "WebForm1.aspx';", true);
+            }
+            else
+            {
+                string script = "alert('¡No ha llenado todos los campos!');";
+                ClientScript.RegisterClientScriptBlock(this.GetType(), "Alert", script, true);
+            }
         }
     }
 }

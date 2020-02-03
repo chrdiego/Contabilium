@@ -1,0 +1,15 @@
+C:\Users\Diego\Desktop\Contabilium\Integrador\hardcodeConsola\bin\Debug\hardcodeConsola.exe.config
+C:\Users\Diego\Desktop\Contabilium\Integrador\hardcodeConsola\bin\Debug\hardcodeConsola.exe
+C:\Users\Diego\Desktop\Contabilium\Integrador\hardcodeConsola\bin\Debug\hardcodeConsola.pdb
+C:\Users\Diego\Desktop\Contabilium\Integrador\hardcodeConsola\bin\Debug\EntityFramework.dll
+C:\Users\Diego\Desktop\Contabilium\Integrador\hardcodeConsola\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Diego\Desktop\Contabilium\Integrador\hardcodeConsola\bin\Debug\WebF.dll
+C:\Users\Diego\Desktop\Contabilium\Integrador\hardcodeConsola\bin\Debug\WebF.pdb
+C:\Users\Diego\Desktop\Contabilium\Integrador\hardcodeConsola\bin\Debug\WebF.dll.config
+C:\Users\Diego\Desktop\Contabilium\Integrador\hardcodeConsola\bin\Debug\EntityFramework.xml
+C:\Users\Diego\Desktop\Contabilium\Integrador\hardcodeConsola\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Diego\Desktop\Contabilium\Integrador\hardcodeConsola\obj\Debug\hardcodeConsola.csprojAssemblyReference.cache
+C:\Users\Diego\Desktop\Contabilium\Integrador\hardcodeConsola\obj\Debug\hardcodeConsola.csproj.CoreCompileInputs.cache
+C:\Users\Diego\Desktop\Contabilium\Integrador\hardcodeConsola\obj\Debug\hardcodeConsola.csproj.CopyComplete
+C:\Users\Diego\Desktop\Contabilium\Integrador\hardcodeConsola\obj\Debug\hardcodeConsola.exe
+C:\Users\Diego\Desktop\Contabilium\Integrador\hardcodeConsola\obj\Debug\hardcodeConsola.pdb

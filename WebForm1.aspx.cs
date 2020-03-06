@@ -6,19 +6,19 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace ProyectoForm
+namespace ProyectoRubro
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         [WebMethod]
         public static List<ViewModel> TraerProductos()
         {
-            using (var dbContext = new Lunes17Entities())
+            using(var dbContext = new Lunes17Entities())
             {
                 List<ViewModel> view = new List<ViewModel>();
                 var productos = dbContext.Producto.Include("Rubro").ToList();
@@ -39,11 +39,11 @@ namespace ProyectoForm
         [WebMethod]
         public static List<ViewModelGenerico> TraerRubros()
         {
-            using (var dbContext = new Lunes17Entities())
+            using(var dbContext = new Lunes17Entities())
             {
                 List<ViewModelGenerico> viewGenerico = new List<ViewModelGenerico>();
                 var rubros = dbContext.Rubro.ToList();
-                foreach (var item in rubros)
+                foreach(var item in rubros)
                 {
                     ViewModelGenerico view1 = new ViewModelGenerico();
                     view1.id = item.IDRubro;
@@ -63,18 +63,53 @@ namespace ProyectoForm
                 return true;
             }
             else
-                return false;
+                return false;            
+        }
+
+        [WebMethod]
+        public static bool EliminarProducto(int id)
+        {
+            using(var dbContext = new Lunes17Entities())
+            {
+                var producto = dbContext.Producto.FirstOrDefault(x => x.IDPRoducto == id);
+                dbContext.Producto.Remove(producto);
+                dbContext.SaveChanges();
+                return true;
+            }
+        }
+        
+        [WebMethod]
+        public static bool ModificarDB(int id, string codigo, string nombre, string descripcion, int rubro)
+        {
+            using(var dbContext = new Lunes17Entities())
+            {
+                Producto aux = new Producto();
+                aux.IDPRoducto = id;
+                aux.Codigo = codigo;
+                aux.Nombre = nombre;
+                aux.Descripcion = descripcion;
+                aux.IDRubro = rubro;
+                var prodmod = dbContext.Producto.FirstOrDefault(x => x.IDPRoducto == id);
+                if (aux.IDPRoducto == prodmod.IDPRoducto && aux.Codigo == prodmod.Codigo && aux.Nombre == prodmod.Nombre && aux.Descripcion == prodmod.Descripcion && aux.IDRubro == prodmod.IDRubro)
+                    return false;
+                prodmod.Codigo = codigo;
+                prodmod.Nombre = nombre;
+                prodmod.Descripcion = descripcion;
+                prodmod.IDRubro = rubro;
+                dbContext.SaveChanges();
+                return true;
+            }
         }
 
         public static void AgregarProductoDB(string codigo, string nombre, string descripcion, int rubro)
         {
-            using (var dbContext = new Lunes17Entities())
+            using(var dbContext = new Lunes17Entities())
             {
                 Producto producto = new Producto();
                 producto.Nombre = nombre;
                 producto.Codigo = codigo;
                 producto.Descripcion = descripcion;
-                producto.IDRubro = dbContext.Rubro.FirstOrDefault(x => x.IDRubro == rubro).IDRubro;
+                producto.IDRubro = rubro;
                 dbContext.Producto.Add(producto);
                 dbContext.SaveChanges();
             }

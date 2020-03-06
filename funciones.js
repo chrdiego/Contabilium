@@ -1,10 +1,5 @@
-// https://dzone.com/articles/crud-operation-in-aspnet-mvc-using-ajax-and-bootst
-
 CargarRubros();
 Filtrar();
-
-
-		//ACÁ SE ENVÍAN DATOS A LA BD
 
 function AgregarProd(){
 	if($('#txtBoxAddCodigo').val() == "" || $('#txtBoxAddNombre').val() == "" || $('#txtBoxAddDescripcion').val() == ""){
@@ -35,8 +30,6 @@ function AgregarProd(){
     });
 }
 
-		//RECIBIENDO DATOS DE LA BD
-
 function CargarRubros(){
 	var html = '';
 		$.ajax({
@@ -63,26 +56,94 @@ function Filtrar()
 		contentType: "application/json; charset=utf-8",
 		dataType: "json",
 		success: function(respuesta){
-			html += '<table align ="center" border="1">'
-			html += '<td><b>Codigo</b></td>'
-			html += '<td><b>Nombre</b></td>'
-			html += '<td><b>Descripcion</b></td>'
-			html += '<td><b>Rubro</b></td>'
-			html += '<td></td><td></td></tr>'
 			console.log(respuesta.d);
 			for(i = 0; i < respuesta.d.length; i++){
-			html += '<tr>'
-			console.log(respuesta.d[i].id);
-			html += '<td>' + respuesta.d[i].codigo + '</td>';
-			html += '<td>' + respuesta.d[i].nombre + '</td>';
-			html += '<td>' + respuesta.d[i].descripcion + '</td>';
-			html += '<td>' + respuesta.d[i].rubro + '</td>';
-			html += '<td><button value="' + respuesta.d[i].id + '" id="eliminarID" onclick="Eliminar();return false;">Eliminar</button></td>';
-			html += '<td><button value="' + respuesta.d[i].id + '" id="modificarID' + respuesta.d[i].id + '">Modificar</button></td>';
-			html += '</tr>'
+				html += '<tr>'
+				console.log(respuesta.d[i].id);
+				html += '<td id="tdcodigo' + respuesta.d[i].id + '"><span id="codigo' + respuesta.d[i].id + '">' + respuesta.d[i].codigo + '</span><input type="text" id="codigoTxt' + respuesta.d[i].id + '" style="display:none"></td>';
+				html += '<td id="tdnombre' + respuesta.d[i].id + '"><span id="nombre' + respuesta.d[i].id + '">' + respuesta.d[i].nombre + '</span><input type="text" id="nombreTxt' + respuesta.d[i].id + '" style="display:none"></td>';
+				html += '<td id="tddescripcion' + respuesta.d[i].id + '"><span id="descripcion' + respuesta.d[i].id + '">' + respuesta.d[i].descripcion + '</span><input type="text" id="descripcionTxt' + respuesta.d[i].id + '" style="display:none"></td>';
+				html += '<td id="tdrubro' + respuesta.d[i].id + '"><span id="rubro' + respuesta.d[i].id + '">' + respuesta.d[i].rubro + '</span></td>';
+				html += '<td id="tdeliminar'+ respuesta.d[i].id +'"><button id="eliminarBtn' + respuesta.d[i].id + '" onclick="Eliminar(' + respuesta.d[i].id + ');return false;">Eliminar</button></td>';
+				html += '<td id="tdmodificar'+ respuesta.d[i].id + '"><button id="modificarBtn' + respuesta.d[i].id + '" onclick="Modificar('+ respuesta.d[i].id + ');return false;">Modificar</button></td>';
+				html += '</tr>'
 			}
 			html += '</table>'
-			$("#datos").html(html);
+			$("#tbody1").html(html);
+		}
+	});
+}
+
+function Filtrar3(id){
+	var codigotxt = $('#codigoTxt' + id).text();
+	var nombretxt = $('#nombreTxt' + id).text();
+	var descripciontxt = $('#descripcionTxt' + id).text();
+	var rubro = $('#selection' + id).val();
+	$('#codigoTxt' + id).hide();
+	$('#nombreTxt' + id).hide();
+	$('#descripcionTxt' + id).hide();
+	$('#tdrubro' + id).hide();
+	$('#codigo' + id).show();
+	$('#codigo' + id).val(codigotxt);
+	$('#nombre' + id).show();
+	$('#nombre' + id).val(nombretxt);
+	$('#descripcion' + id).show();
+	$('#descripcion' + id).val(descripciontxt);
+	$('#rubro' + id).show();
+	$('#rubro' + id).val(rubro);
+	$('#aceptarBtn' + id).hide();
+	$('cancelarBtn' + id).hide();
+	$('#eliminarBtn').show();
+	$('#modificarBtn').show();
+}
+
+function Modificar(id){
+	var codigotxt = $('#codigo' + id).text();
+	var nombretxt = $('#nombre' + id).text();
+	var descripciontxt = $('#descripcion' + id).text();
+	var rubro = $('#rubro' + id).text();
+	$('#codigo' + id).hide();
+	$('#nombre' + id).hide();
+	$('#descripcion' + id).hide();
+	/*$("#tdcodigo" + id).html('<input type="text" id="codigoTxt' + id + '" value="' + codigotxt +'">');
+	$("#tdnombre" + id).html('<input type="text" id="nombreTxt' + id + '" value="' + nombretxt +'">');
+	$("#tddescripcion" + id).html('<input type="text" id="descripcionTxt' + id + '" value="' + descripciontxt +'">');*/
+	$("#tdrubro" + id).html($('<select id="selection' + id + '"></select>'));
+	$('#descripcionTxt' + id).show();
+	$('#descripcionTxt' + id).val(descripciontxt);
+	$('#nombreTxt' + id).show();
+	$('#nombreTxt' + id).val(nombretxt);
+	$('#codigoTxt' + id).show();
+	$('#codigoTxt' + id).val(codigotxt);
+	var options = $("#selection").html();
+	$('#selection' + id).append(options);
+	$('#modificarBtn' + id).hide();
+	$('#eliminarBtn' + id).hide();
+	$('#tdmodificar' + id).html('<button id="cancelarBtn' + id + '" onclick="Filtrar(' + id + ');return false;">Cancelar</button>');
+	$('#tdeliminar' + id).html('<button id="aceptarBtn' + id + '" onclick="ModificarDB(' + id + ');return false;">Aceptar</button>');
+}
+
+function ModificarDB(id){
+	var json = {
+		'id' : id,
+		'codigo' : $('#codigoTxt' + id).val(),
+		'nombre' : $('#nombreTxt' + id).val(),
+		'descripcion' : $('#descripcionTxt' + id).val(),
+		'rubro' : $("#selection" + id).val()
+	};
+	$.ajax({
+		type: "POST",
+		url: "WebForm1.aspx/ModificarDB",
+		contentType: "application/json;charset=utf-8;",
+		dataType: "json",
+		data: JSON.stringify(json),
+		success: function(respuesta3){
+			if(respuesta3.d){
+				alert("¡Producto modificado!");
+				Filtrar();
+			}
+			else
+				alert("No se ha modificado ningún campo");
 		}
 	});
 }
@@ -90,25 +151,21 @@ function Filtrar()
 function Eliminar(id){
 	if(confirm("¿Está seguro que desea eliminar el producto?")){
 		//alert("Funciona");
-		alert($('#eliminarID').val());
+		var json = {
+			'id' : id
+		};
 		$.ajax({
-			url: "WebForm1.aspx/BorrarProducto" + id,
+			url: "WebForm1.aspx/EliminarProducto",
 			type: "POST",
 			contentType: "application/json;charset=utf-8",
 			dataType: "json",
+			data:JSON.stringify(json),
 			success: function(respuesta2){
-				AlgoQueBorre();
+				if(respuesta2.d)
+					Filtrar();
+				else
+					alert("No se pudo eliminar");
 			}
 		});
 	}
-}
-
-function Esconder(){
-	$('#agBoton').toggle();
-	$('#lblCodigo').toggle();
-	$('#lblNombre').toggle();
-	$('#lblDescripcion').toggle();
-	$('#txtBoxAddCodigo').toggle();
-	$('#txtBoxAddNombre').toggle();
-	$('#txtBoxAddDescripcion').toggle();
 }
